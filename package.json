@@ -1,0 +1,23 @@
+{
+  "name": "alicelab.world",
+  "version": "0.0.1",
+  "description": "",
+  "main": "make.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worldmaking/worldmaking.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/worldmaking/worldmaking.github.io/issues"
+  },
+  "homepage": "https://github.com/worldmaking/worldmaking.github.io#readme",
+  "dependencies": {
+    "marked": "^1.1.1",
+    "pegjs": "^0.10.0"
+  }
+}
