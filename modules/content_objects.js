@@ -23,7 +23,7 @@ exports.module = class {
     }
 }
 
-let example = new this.module();
-
-let array = example.getAllFiles();
-console.log(array);
+// TEST
+// let example = new this.module();
+// let array = example.getAllFiles();
+// console.log(array);
