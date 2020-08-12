@@ -24,11 +24,6 @@ marked.setOptions({
   const fs = require("fs"),
   path = require("path");
 
-exports.parseFile = function(...args){
-    const filepath = "./content/Posts/2020-07-11/Hello World 2017.md";
-    const src = fs.readFileSync(filepath, "utf8");
-    // here we convert markdown into html:
-    // see https://github.com/markedjs/marked
-    console.log(marked(src));
-
+exports.parseFile = function(content='no-content-found'){
+    return marked(content);
 }
