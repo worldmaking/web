@@ -6,6 +6,7 @@ var fs = require('fs'),
     filePath = path.join(__dirname, 'start.html'),
     util = require("util");
 
+let parser = require('./parser.js')
 // CLI
 const ARGS = process.argv.slice(2);
 if (ARGS.length == 0){
@@ -20,6 +21,7 @@ else if (ARGS.includes("help:comments") || ARGS.includes("h:comments")){
 
 function help(){
     logger.log("HERE IS YOUR HELP");
+    parser.parseFile();
 }
 
 function commenting(){
