@@ -8,7 +8,7 @@ const home_dir = path.join(__dirname, '..')
 // Read File Logic
 // NOTE FILE PATH IS DEFAULT AT web DIRECTORY
 function readFile(filepath){
-    var content;
+    let content;
     filepath = path.join(home_dir, filepath)
     console.log(filepath);
     try{
@@ -22,9 +22,11 @@ function readFile(filepath){
 };
 
 exports.header = function (){
-    readFile("/content/templates/header.html");
+    let content = readFile("/content/templates/header.html");
+    return content;
 }
 
 exports.footer = function (){
-
+    let content = readFile("/content/templates/footer.html");
+    return content;
 }

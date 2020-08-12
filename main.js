@@ -73,9 +73,11 @@ function readFile(path){
 // Write File Logic
 function generateFile(path, content){
     // Update the raw content to HTML
-    template.header();
+    let header_content = template.header();
+    let footer_content = template.footer();
     try{
         content = parser.parseFile(content);
+        content = header_content + content + footer_content;
         fs.writeFileSync(path, content);
     } catch (e) {
         logger.alert(e);
