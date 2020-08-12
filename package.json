@@ -5,7 +5,8 @@
   "main": "make.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node make.js"
+    "postinstall": "node make.js",
+    "compile": "node main.js"
   },
   "repository": {
     "type": "git",
