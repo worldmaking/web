@@ -13,6 +13,11 @@ const marked = require("marked");
 const buildpath = "./";	
 const contentpath = "content";
 
+// this is going to need a few passes. 
+// first pass parses all the files (pages, posts, tables) & collects their metadata etc.
+// so that navigation/menu stuff can be generated.
+// second pass actually generates the html pages.
+
 fs.readdirSync(contentpath).forEach((filename, i)=>{
 	const filepath = path.join(contentpath, filename);
 	const stat = fs.lstatSync(filepath);
