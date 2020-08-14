@@ -2,9 +2,7 @@
   authors: ["gw"], 
   tags: ["mischmasch"],
   date: "August 12, 2020",
-  title: FILENAME,
   thumbnail: "test.png"
-  content: PLACEHOLDER
 } -->
 
 # Mischmasch
