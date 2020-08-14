@@ -1,13 +1,14 @@
 // IMPORTS
 const logger = require('./modules/logger.js');
 const { exit } = require('process');
-const parser = require('./modules/parser');
+const mdReader = require('./modules/mdReader');
 const template = require('./modules/template');
-const fs = require('fs'),
-    path = require('path'),    
-    filePath = path.join(__dirname, 'start.html'),
-    util = require("util");
+const path = require('path')   
+const filePath = path.join(__dirname);
+const db = require('./modules/json_db');
 
+
+const database = new db.module();
 
 // CLI
 const ARGS = process.argv.slice(2);
@@ -23,7 +24,6 @@ else if (ARGS.includes("help:comments") || ARGS.includes("h:comments")){
 
 function help(){
     logger.log("HERE IS YOUR HELP");
-    parser.parseFile();
 }
 
 function commenting(){
@@ -35,52 +35,27 @@ function commenting(){
 }
 
 function main(){
-    logger.log('Starting up');
-    generateIndex();
+
 };
 
 
 //READ WRITE SECTION
 
-function generateIndex(path='./content/index.md'){
-    handler(path, './sample.html')
+function generateIndex(){
 }
 
 
 // Content Handler
 function handler(read_path, write_path){
-    logger.note("Reading contents of:", read_path);
-    let content = readFile(read_path);
-    logger.note("Writing to:", write_path);
-    generateFile(write_path, content);
-    logger.clear('Content written to', write_path);
+  
 }
 
 // Read File Logic
 function readFile(path){
-    var content;
-    try{
-        logger.log("...");
-        content = fs.readFileSync(path, 'utf8');
-        logger.clear("Read", path)
-    } catch (e) {
-        logger.alert(e);
-        process.exit(1);
-    }
-    return content;
+  
 };
 
 // Write File Logic
 function generateFile(path, content){
-    // Update the raw content to HTML
-    let header_content = template.header();
-    let footer_content = template.footer();
-    try{
-        content = parser.parseFile(content);
-        content = header_content + content + footer_content;
-        fs.writeFileSync(path, content);
-    } catch (e) {
-        logger.alert(e);
-        process.exit(1);
-    }
+ 
 }
