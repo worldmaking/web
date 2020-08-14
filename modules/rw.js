@@ -17,10 +17,10 @@ exports.read = function (path){
 
 exports.exists = function (path){
     try {
-        if(fs.existsSync(path))
+        if(fs.existsSync(path)){
             return true;
-        else
-            return false
+        } else
+            return false;
       } catch(err) {
         return false;
       }
@@ -30,6 +30,7 @@ exports.write = function (path, content){
     console.log(path);
     try{
         fs.writeFileSync(path, content);
+        // fs.closeSync();
     } catch (e) {
         throw Error(e);
     }
