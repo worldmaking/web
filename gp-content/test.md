@@ -1,6 +1,5 @@
 Here's a test
 
-<!-- some comment -->
 
 more test
 

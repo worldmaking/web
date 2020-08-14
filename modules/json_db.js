@@ -23,13 +23,20 @@ exports.module = class {
         }
         this._file_path = path.join(__dirname, '/data/data.json');
 
-        if (rw.exists(this._file_path)){
-            this._data = JSON.parse(rw.read(this._file_path));
+        // if (rw.exists(this._file_path)){
+        //     this._data = JSON.parse(rw.read(this._file_path));
+        // }
+        // else{ 
+        //     rw.create(this._file_path, "{}");
+        //     this._data = {};
+        // }
+
+        if(rw.exists(this._file_path)){
+            rw.delete(this._file_path);
         }
-        else{ 
-            rw.create(this._file_path, "{}");
-            this._data = {};
-        }
+        rw.create(this._file_path, "");
+        this._data = {};
+
 
         let first = Object.keys(this._data)[0];
         for (let k in this._data[first]){
@@ -48,6 +55,7 @@ exports.module = class {
             this._dataProps.push(`post_${propName}`);
             this[`set_${propName}`] = function(obj, val){
                 this._data[`${obj}`][`post_${propName}`] = val;
+                this.sync();
             };
             for (let k in this._data){
                 if(!this._data[k].hasOwnProperty(`post_${propName}`)){
@@ -60,13 +68,10 @@ exports.module = class {
 
     addEntry(entry){
         if(!this._data.hasOwnProperty(entry)){
+            this._data[entry] = {}
             console.log(`New ${entry} added.`);
-            for (let prop of this._dataProps){
-                this._data[entry] = {}
-                this.syncEntryProp(entry);
-                this.sync();
-            }
-                
+            this.syncEntryProp(entry);
+            this.sync(); 
         }
         else{
             console.log(`${entry} existed.`);
@@ -113,7 +118,7 @@ exports.module = class {
     }
 
     sync(){
-        rw.write(this._file_path, JSON.stringify(this._data));
+        rw.write(this._file_path, JSON.stringify(this._data, null, "\t"));
     }
 
 }

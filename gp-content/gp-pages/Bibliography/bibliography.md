@@ -1,8 +1,9 @@
 <!-- { 
-  authors: ["Graham Wakefield"], 
-  tags: ["bibliography"],
-  date: "July 12, 2015",
-  thumbnail: "test.png"
+  "authors": ["Graham Wakefield"], 
+  "tags": ["bibliography"],
+  "date": "July 12, 2015",
+  "thumbnail": "test.png",
+  "title": "bibliography"
 } -->
 
 # Biography

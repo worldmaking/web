@@ -1,11 +1,12 @@
 // IMPORTS
 const logger = require('./modules/logger.js');
-const { exit } = require('process');
+const { exit, rawListeners } = require('process');
 const mdReader = require('./modules/mdReader');
 const template = require('./modules/template');
 const path = require('path')   
 const filePath = path.join(__dirname);
 const db = require('./modules/json_db');
+const rw = require("./modules/rw");
 
 
 const database = new db.module();
@@ -35,9 +36,32 @@ function commenting(){
 }
 
 function main(){
-
+    valAndBuildFiles();
 };
 
+function valAndBuildFiles() {
+    let fileArray = mdReader.getAllFiles();
+    for(let item of fileArray){
+        let content = rw.read(item);
+        
+        if(content.match(new RegExp(/<!--\s*{.*/) && content.match(new RegExp(/.*}\s*-->/)))) {
+            let meta = JSON.parse(content.substring(content.indexOf('<!--') + 4, content.indexOf('-->')));
+            buildDatabase(meta);
+        } else {
+            logger.alert("PLEASE FIX THE FOLLOWING FILE", item);
+        }
+    }
+}
+
+function buildDatabase(metadata){
+    database.addEntry(metadata.title);
+    for(let k in metadata){
+        if(k != "title"){
+            database.addProp(k);
+            database[`set_${k}`](metadata.title, metadata[k]);
+        }
+    }
+}
 
 //READ WRITE SECTION
 

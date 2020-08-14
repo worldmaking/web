@@ -26,8 +26,16 @@ exports.exists = function (path){
       }
 }
 
+exports.delete = function(path){
+    try {
+        fs.unlinkSync(path);
+    } catch (err) {
+        throw Error(err);
+    }
+}
+
 exports.write = function (path, content){
-    console.log(path);
+    //console.log(path);
     try{
         fs.writeFileSync(path, content);
         // fs.closeSync();
@@ -37,7 +45,7 @@ exports.write = function (path, content){
 }
 
 exports.create = function (path, content){
-    console.log(path);
+    //console.log(path);
     fs.writeFile(path, content, function (e) {
         if (e) throw e;
     });

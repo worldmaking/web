@@ -1,8 +1,9 @@
 <!-- { 
-  authors: ["gw"], 
-  tags: ["mischmasch"],
-  date: "August 12, 2020",
-  thumbnail: "test.png"
+  "authors": ["gw"], 
+  "tags": ["mischmasch"],
+  "date": "August 14, 2020",
+  "thumbnail": "test.png",
+  "title": "Hello World"
 } -->
 
 # Mischmasch

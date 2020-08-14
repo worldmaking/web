@@ -41,7 +41,9 @@ exports.getAllFiles = function(dirPath = filepath, arrayOfFiles = []) {
         if (fs.statSync(dirPath + "\\" + file).isDirectory()) {
             arrayOfFiles = self.getAllFiles(dirPath + "\\" + file, arrayOfFiles);
         } else {
-            arrayOfFiles.push(path.join(dirPath, file));
+            if (path.extname(file) == ".md") {
+              arrayOfFiles.push(path.join(dirPath, file));
+            }
         }
     });
 
