@@ -1,9 +1,11 @@
-<!-- { 
+<!-- {
+  "type": "page",
+  "title": "bibliography",
+  "doi": ""
   "authors": ["Graham Wakefield"], 
   "tags": ["bibliography"],
   "date": "July 12, 2015",
-  "thumbnail": "test.png",
-  "title": "bibliography"
+  "thumbnail": "https://getuikit.com/v2/docs/images/placeholder_600x400.svg"
 } -->
 
 # Biography

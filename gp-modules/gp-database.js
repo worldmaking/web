@@ -1,4 +1,4 @@
-const rw = require('./rw');
+const rw = require('./gp-read-write');
 const path = require('path');
 
 /**

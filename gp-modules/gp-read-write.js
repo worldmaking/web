@@ -1,5 +1,7 @@
 // IMPORTS
-const fs = require('fs');
+let fs = require('fs'),
+    path = require('path'),
+    appRoot = require('app-root-path');
 
 /**
  * Throws error if file not found
@@ -15,9 +17,9 @@ exports.read = function (path){
     return content;
 };
 
-exports.exists = function (path){
+exports.exists = function (target){
     try {
-        if(fs.existsSync(path)){
+        if(fs.existsSync(path.join(appRoot.path, target))){
             return true;
         } else
             return false;
@@ -50,3 +52,8 @@ exports.create = function (path, content){
         if (e) throw e;
     });
 }
+
+exports.listFiles = function (target){
+    let ret = fs.readdirSync(path.join(appRoot.path, target));
+    return ret;
+};

@@ -5,7 +5,7 @@
   "main": "make.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node make.js",
+    "postinstall": "node main.js",
     "compile": "node main.js"
   },
   "repository": {
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/worldmaking/worldmaking.github.io#readme",
   "dependencies": {
+    "app-root-path": "^3.0.0",
+    "inquirer": "^7.3.3",
     "marked": "^1.1.1",
     "pegjs": "^0.10.0"
   }
