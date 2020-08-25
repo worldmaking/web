@@ -1,47 +1,40 @@
 // IMPORTS
 let logger = require('./gp-modules/gp-logger.js'),
     inquirer = require('inquirer'),
-    rw = require('./gp-modules/gp-read-write');
+    rw = require('./gp-modules/gp-read-write')
+    inquery = require('./gp-modules/gp-inquery');
 
 // Globals
-let themes, config, confContent;
+let answer = null, themes, config, confContent;
 
-function main(){
+async function main(){
     themes = rw.listFiles('./gp-content/gp-themes');
     config = './gp-config.json';
 
-    /* Check if gp-config.json exists */
-    if (!rw.exists(config))
-        await initiate();
-    else
-        confContent = await rw.read(config);
-    console.log(confContent);
+    logger.log('Welcome to GitPres static site generator. Follow the instruction to build your website.');
+    answer = await inquery.bool('Setup new environment?');
+    console.log(answer);
+    if (answer){
+        console.log('running init');
+        initiate();
+    }
+    else{
+        console.log('running build');
+        buildModule();
+    }
+    
     
 }
 
-async function initiate(){
-    var questions = [
-        {
-        type: 'input',
-        name: 'site_name',
-        message: "What's your website's name >"
-        },
-        {
-            type: 'list',
-            name: 'site_theme',
-            message: "Choose the theme you would like to use >",
-            choices: themes
-        }
-    ];
-
-    // valAndBuildFiles();
-    logger.log('Welcome to GitPres static site generator. Follow the instruction to build your website.');
-    inquirer.prompt(questions).then((answers) => {
-        confContent = JSON.stringify(answers, null, '  ')
-        rw.write(config, confContent);
-    });
+function initiate(){
+    logger.warn(`Building new environment. Please clean up the workspace before you continue:\n
+    1. Remove files within public_html directory
+    2. Remove files within gp-templates directory`);
 }
 
+function buildModule(){
+
+}
 
 
 // function valAndBuildFiles() {
