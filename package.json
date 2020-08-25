@@ -21,6 +21,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "inquirer": "^7.3.3",
+    "jsdom": "^16.4.0",
     "marked": "^1.1.1",
     "pegjs": "^0.10.0"
   }

@@ -6,7 +6,7 @@ let logger = require('./gp-modules/gp-logger.js'),
 // Globals
 let themes, config, confContent;
 
-function main(){
+async function main(){
     themes = rw.listFiles('./gp-content/gp-themes');
     config = './gp-config.json';
 

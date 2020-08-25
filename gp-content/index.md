@@ -3,7 +3,8 @@
   "tags": ["about"],
   "date": "July 15, 2015",
   "thumbnail": "test.png",
-  "title": "Index"
+  "title": "Index",
+  "description" : "100 WORD DESCRIPTION MAX"
 } -->
 
 ![Archipelago](images/IMG_4260.jpg)
