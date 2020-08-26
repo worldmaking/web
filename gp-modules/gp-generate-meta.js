@@ -20,9 +20,9 @@ exports.item = class {
     }
     generate(metaData = [['description', 'wdnaodnoa'], ['authors', ['graham']], ['keywords', ['dawda','dwada']]]) {
         
-        let header = this.constructHeader(metaData);
+        let meta = this.constructMeta(metaData);
         
-        this.content = this.content.replace(pointer, header);
+        this.content = this.content.replace(pointer, meta);
         
        rw.write(this._writePath, this.content);
     }
@@ -38,16 +38,16 @@ exports.item = class {
       
     //     return '';
     //   }
-    constructHeader(references){
-        let header = '';
+    constructMeta(references){
+        let meta = '';
         for (let index of references){
-            header = header.concat(`
+            meta = meta.concat(`
             <meta name="${index[0]}" content="${index[1]}">`)
         }
-        return header;
+        return meta;
     }
 }
 
-console.log('HEADER');
+console.log('META');
 var item = new this.item();
 var x = item.generate();
