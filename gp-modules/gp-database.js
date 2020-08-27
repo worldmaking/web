@@ -15,34 +15,37 @@ const path = require('path');
  * @syncEntryProp syncs fields of given entry
  * @sync writes JSON output file
  *  */
-exports.module = class {
-    constructor(...args){
+
+module.exports = class {
+    constructor(){
         this._dataProps = [];
-        for (let item of args){
-            this._dataProps.push(`post_${item}`);
-        }
-        this._file_path = path.join(__dirname, '/data/data.json');
-
-        // if (rw.exists(this._file_path)){
-        //     this._data = JSON.parse(rw.read(this._file_path));
-        // }
-        // else{ 
-        //     rw.create(this._file_path, "{}");
-        //     this._data = {};
-        // }
-
-        if(rw.exists(this._file_path)){
-            rw.delete(this._file_path);
-        }
-        rw.create(this._file_path, "");
         this._data = {};
+        this._filePath = './gp-templates/data.json';
+    }
 
-
-        let first = Object.keys(this._data)[0];
-        for (let k in this._data[first]){
-            k = k.toString().replace('post_', '');
-            this.addProp(k);
+    async init(...args){
+        console.log('checking');
+        if(await rw.exists(this._filePath)){
+            console.log('Exists');
+            this._data = await rw.read(this._filePath).then(console.log('reading'));
+            console.log('read');
+        } else {
+            console.log('Creating');
+            await rw.create(this._filePath, "{}");
+            console.log('Created');
         }
+        console.log(this._data);
+
+        // for (let item of args){
+        //     this._dataProps.push(`post_${item}`);
+        // }
+
+        // let first = Object.keys(this._data)[0];
+        
+        // for (let k in this._data[first]){
+        //     k = k.toString().replace('post_', '');
+        //     this.addProp(k);
+        // }
     }
 
     get data (){
@@ -117,8 +120,8 @@ exports.module = class {
         }
     }
 
-    sync(){
-        rw.write(this._file_path, JSON.stringify(this._data, null, "\t"));
+    async sync(){
+        await rw.write(this._filePath, JSON.stringify(this._data, null, "\t"));
     }
 
 }
