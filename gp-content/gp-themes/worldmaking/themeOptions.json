@@ -1,0 +1,11 @@
+{
+    "theme-name":  "World Making",
+    "theme-author": "Allice Labs",
+    "theme-desc": "A simple sample theme for the website",
+    "author-url": "allicelab.com",
+    "version": "0.0.2",
+    "license": "GPL 2.0",
+    "theme-settings": {
+        "footer": "2"
+    }
+}

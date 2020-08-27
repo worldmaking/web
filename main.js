@@ -29,7 +29,7 @@ async function main(){
 function initiate(){
     logger.warn(`Building new environment. Please clean up the workspace before you continue:\n
     1. Remove files within public_html directory
-    2. Remove files within gp-templates directory`);
+    2. Remove files within gp-temp directory`);
 }
 
 function buildModule(){

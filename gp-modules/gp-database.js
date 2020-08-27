@@ -1,5 +1,4 @@
 const rw = require('./gp-read-write');
-const path = require('path');
 
 /**
  * JSON Data File Module.
@@ -8,6 +7,7 @@ const path = require('path');
  * @data Returns JSON string of all entries
  * @addProp Creates new field and syncs it across all entries
  * @addEntry Creates new entry
+ * @removeEntry Removes an existing entry
  * @getEntry returns an entry (by name)
  * @getAllEntries returns all entries
  * @searchEntry returns a list of all entries containing given string
@@ -17,30 +17,24 @@ const path = require('path');
  *  */
 
 module.exports = class {
-    constructor(){
+    constructor(filePath = './gp-temp/data.json'){
         this._dataProps = [];
         this._data = {};
-        this._filePath = './gp-templates/data.json';
+        this._filePath = filePath;
     }
 
-    async init(...args){
+    async init(){
         if(await rw.exists(this._filePath)){
             this._data = await rw.read(this._filePath);
             this._data = JSON.parse(this._data);
         } else {
             await rw.create(this._filePath, "{}");
         }
-
-        // for (let item of args){
-        //     this._dataProps.push(`post_${item}`);
-        // }
-
-        // let first = Object.keys(this._data)[0];
-        
-        // for (let k in this._data[first]){
-        //     k = k.toString().replace('post_', '');
-        //     this.addProp(k);
-        // }
+        let first = Object.keys(this._data)[0];
+        for (let k in this._data[first]){
+            k = k.toString().replace('post_', '');
+            this.addProp(k);
+        }
     }
 
     async reinit(){
@@ -82,7 +76,15 @@ module.exports = class {
         else{
             console.log(`${entry} existed.`);
         }
-        
+    }
+    removeEntry(entry){
+        if(this._data.hasOwnProperty(entry)){
+            delete this._data[entry];
+            console.log(`${entry} removed.`);
+            this.sync()
+        } else{
+            console.log(`${entry} was not found.`);
+        }
     }
 
     getEntry (entry){
@@ -108,7 +110,6 @@ module.exports = class {
 
     showProps() {
         var result = ``;
-        console.log('running show-prop')
         for (var i in this) {
             console.log(`DataType.${i}`,this[i]);
         }
@@ -128,6 +129,3 @@ module.exports = class {
     }
 
 }
-
-// TEST CASES
-

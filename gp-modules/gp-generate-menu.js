@@ -15,7 +15,7 @@ const pointerMobile = '<!-- update mobile -->';
 exports.item = class {
     constructor(templateName = 'worldmaking'){
         this._filePath = path.join(appRoot.path,`gp-content/gp-themes/${templateName}/menu.html`);
-        this._writePath = path.join(appRoot.path,`gp-templates/menu.html`);
+        this._writePath = path.join(appRoot.path,`gp-temp/menu.html`);
         this.content = rw.read(this._filePath);
     }
     generate(pages = [['home' , 'index.html'], ['contact us', 'contact.html'], ['about us', 'about.html']]) {
