@@ -8,36 +8,45 @@ const logger = require('./gp-logger');
 var appRoot = require('app-root-path');
 const path = require('path');
 const rw = require('./gp-read-write');
-//const dom = require('jsdom')
+const DOM = require('jsdom')
 
-const pointer = '<!-- update -->';
+//const pointer = '<!-- update -->';
 
-exports.item = class {
+class A {
     constructor(templateName = 'worldmaking'){
-        this._filePath = path.join(appRoot.path,`gp-content/gp-themes/${templateName}/footer.html`);
-        this._writePath = path.join(appRoot.path,`gp-templates/footer.html`);
-        this.content = rw.read(this._filePath);
+        this.init(templateName);
     }
-    generate() {
-        
-        let footer = this.constructFooter();
-        
-        this.content = this.content.replace(pointer, footer);
-        
-       rw.write(this._writePath, this.content);
+    async init(templateName) {
+        this._filePath = path.join(`gp-content/gp-themes/${templateName}/main.html`);
+        this._writePath = path.join(`gp-templates/main.html`);
+        this.content = await rw.read(this._filePath);
     }
+
+    async generate(data = ["test"]) {
+        let footer = this.constructFooter(data);
+        let dom = new DOM.JSDOM(this.content);
+        console.log(dom.serialize())
+        this.content = dom.window.document.getElementById("test").insertAdjacentHTML("afterbegin", footer);
+        
+       rw.write(this._writePath, "A" );
+    }
+
     constructFooter(references){
         let footer = '';
         for (let index of references){
            //to be filled in
            footer = footer.concat(`
-            
+            <div class="test"> CONTENT </div>
             `)
         }
         return footer;
     }
 }
 
-console.log('FOOTER');
-var item = new this.item();
-var x = item.generate();
+async function main() {
+    console.log('FOOTER');
+    var item = await new A();
+    var x = item.generate();
+}
+
+main();

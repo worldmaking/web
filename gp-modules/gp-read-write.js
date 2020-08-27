@@ -47,12 +47,8 @@ function remove (path){
 
 function write (path, content){
     return new Promise((resolve) => {
-        try{
-            fs.writeFileSync(path, content);
-            resolve(true);
-        } catch {
-            resolve(false);
-        }
+        resolve(fs.writeFileSync(path, content));
+        
     });
 }
 
