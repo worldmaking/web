@@ -17,18 +17,18 @@ class A {
         this.init(templateName);
     }
     async init(templateName) {
-        this._filePath = path.join(`gp-content/gp-themes/${templateName}/main.html`);
+        this._filePath = path.join('gp-content/gp-themes/worldmaking/header.html');
         this._writePath = path.join(`gp-templates/main.html`);
-        this.content = await rw.read(this._filePath);
+        this.content = rw.read(this._filePath).then(console.log("finished ", this.content));
     }
 
     async generate(data = ["test"]) {
         let footer = this.constructFooter(data);
         let dom = new DOM.JSDOM(this.content);
-        console.log(dom.serialize())
-        this.content = dom.window.document.getElementById("test").insertAdjacentHTML("afterbegin", footer);
-        
-       rw.write(this._writePath, "A" );
+        console.log(dom.serialize());
+        // this.content = dom.window.document.getElementById("test").insertAdjacentHTML("afterbegin", footer);
+        console.log(this.content);
+        rw.write(this._writePath, "A" );
     }
 
     constructFooter(references){

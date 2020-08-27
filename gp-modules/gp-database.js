@@ -24,17 +24,12 @@ module.exports = class {
     }
 
     async init(...args){
-        console.log('checking');
         if(await rw.exists(this._filePath)){
-            console.log('Exists');
-            this._data = await rw.read(this._filePath).then(console.log('reading'));
-            console.log('read');
+            this._data = await rw.read(this._filePath);
+            this._data = JSON.parse(this._data);
         } else {
-            console.log('Creating');
             await rw.create(this._filePath, "{}");
-            console.log('Created');
         }
-        console.log(this._data);
 
         // for (let item of args){
         //     this._dataProps.push(`post_${item}`);
@@ -46,6 +41,14 @@ module.exports = class {
         //     k = k.toString().replace('post_', '');
         //     this.addProp(k);
         // }
+    }
+
+    async reinit(){
+        if(await rw.exists(this._filePath))
+            await rw.delete(this._filePath);
+         else 
+            await rw.create(this._filePath, "{}");
+        this._data = JSON.parse(this._data);
     }
 
     get data (){
@@ -128,12 +131,3 @@ module.exports = class {
 
 // TEST CASES
 
-// let DataStructure = new this.module("author");
-// console.log(DataStructure.data);
-// DataStructure.addEntry("Post 1");
-// DataStructure.addEntry("Post 2");
-// DataStructure.addEntry("Post 3");
-// DataStructure.showProps();
-// console.log(DataStructure.getAllEntries());
-// console.log(DataStructure.getEntry('Post 1'));
-// console.log(DataStructure.searchEntries('Post'));
