@@ -15,7 +15,7 @@ const pointer = '<!-- update -->';
 exports.item = class {
     constructor(templateName = 'worldmaking'){
         this._filePath = path.join(appRoot.path,`gp-content/gp-themes/${templateName}/header.html`);
-        this._writePath = path.join(appRoot.path,`gp-temp/header.html`);
+        this._writePath = path.join(appRoot.path,`gp-config/header.html`);
         this.content = rw.read(this._filePath);
     }
     generate(metaData = [['description', 'wdnaodnoa'], ['authors', ['graham']], ['keywords', ['dawda','dwada']]]) {

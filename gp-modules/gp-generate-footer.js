@@ -18,7 +18,7 @@ class A {
     }
     async init(templateName) {
         this._filePath = path.join('gp-content/gp-themes/worldmaking/header.html');
-        this._writePath = path.join(`gp-temp/main.html`);
+        this._writePath = path.join(`gp-config/main.html`);
         this.content = rw.read(this._filePath).then(console.log("finished ", this.content));
     }
 

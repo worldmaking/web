@@ -18,7 +18,7 @@ async function main () {
     console.log(DataStructure.searchEntries('Post'));
     console.log(DataStructure.data);
     console.log('before');
-    let item = './gp-temp/data.json';
+    let item = './gp-config/data.json';
     console.log(item);
     if (rw.exists(item))
         console.log('ok');

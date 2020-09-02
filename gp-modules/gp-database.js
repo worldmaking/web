@@ -17,7 +17,7 @@ const rw = require('./gp-read-write');
  *  */
 
 module.exports = class {
-    constructor(filePath = './gp-temp/data.json'){
+    constructor(filePath = './gp-config/data.json'){
         this._dataProps = [];
         this._data = {};
         this._filePath = filePath;
