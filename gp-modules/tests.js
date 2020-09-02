@@ -17,6 +17,14 @@ async function main () {
     console.log(DataStructure.getEntry('Post 1'));
     console.log(DataStructure.searchEntries('Post'));
     console.log(DataStructure.data);
+    console.log('before');
+    let item = './gp-temp/data.json';
+    console.log(item);
+    if (rw.exists(item))
+        console.log('ok');
+    else
+        console.log('no');
+    console.log('after');
     // console.log(rw.read(`gp-content/gp-themes/worldmaking/header.html`));
 } 
 

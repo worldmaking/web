@@ -23,12 +23,12 @@ module.exports = class {
         this._filePath = filePath;
     }
 
-    async init(){
-        if(await rw.exists(this._filePath)){
-            this._data = await rw.read(this._filePath);
+    init(){
+        if(rw.exists(this._filePath)){
+            this._data = rw.read(this._filePath);
             this._data = JSON.parse(this._data);
         } else {
-            await rw.create(this._filePath, "{}");
+            rw.create(this._filePath, "{}");
         }
         let first = Object.keys(this._data)[0];
         for (let k in this._data[first]){
@@ -38,10 +38,10 @@ module.exports = class {
     }
 
     async reinit(){
-        if(await rw.exists(this._filePath))
-            await rw.delete(this._filePath);
+        if(rw.exists(this._filePath))
+            rw.delete(this._filePath);
          else 
-            await rw.create(this._filePath, "{}");
+            rw.create(this._filePath, "{}");
         this._data = JSON.parse(this._data);
     }
 
@@ -125,7 +125,7 @@ module.exports = class {
     }
 
     async sync(){
-        await rw.write(this._filePath, JSON.stringify(this._data, null, "\t"));
+        rw.write(this._filePath, JSON.stringify(this._data, null, "\t"));
     }
 
 }
