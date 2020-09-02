@@ -5,7 +5,36 @@
     "author-url": "allicelab.com",
     "version": "0.0.2",
     "license": "GPL 2.0",
-    "theme-settings": {
-        "footer": "2"
+    "theme-options":{
+        "base": "wm-main.html",
+        "branding": {
+            "base-ref": "",
+            "image-ref": "",
+            "text-ref": ""
+        },
+        "navigation": {
+            "base-ref": "",
+            "nav-ref": "",
+            "template": "wm-nav.html"
+        },
+        "body": {
+            "base-ref": "",
+            "body-ref": "",
+            "template": [
+                "wm-body.html",
+                "wm-body-wide.html",
+                "wm-body-nospace.html"
+            ]
+        },
+        "footer":{
+            "base-ref": "",
+            "body-ref": "",
+            "template": "wm-footer.html"
+        },
+        "stylesheet":{
+            "base-ref": "",
+            "template": ""
+        }
     }
+
 }

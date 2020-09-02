@@ -18,19 +18,20 @@ module.exports = {
  * @param {*} path 
  */
 function read (filePath){
-    return new Promise((resolve) => {
-        console.log('read ' + path.join(appRoot.path, filePath));
-        resolve(fs.readFileSync(path.join(appRoot.path, filePath), 'utf8'));
-    });
+    // return new Promise((resolve) => {
+    //     console.log('read ' + path.join(appRoot.path, filePath));
+    //     resolve(fs.readFileSync(path.join(appRoot.path, filePath), 'utf8'));
+    // });
+    return fs.readFileSync(path.join(appRoot.path, filePath), 'utf8');
 }
 
 function exists (filePath){
-    return new Promise((resolve) => {
-        console.log('exists ' + path.join(appRoot.path, filePath));
-            resolve(fs.existsSync(path.join(appRoot.path, filePath)));
-
-
-    });
+    // return new Promise((resolve) => {
+    //     console.log('exists ' + path.join(appRoot.path, filePath));
+    //         resolve(fs.existsSync(path.join(appRoot.path, filePath)));
+    // });
+    console.log(path.join(appRoot.path, filePath))
+    fs.existsSync(path.join(appRoot.path, filePath))
 }
 
 
@@ -46,22 +47,24 @@ function remove (path){
 }
 
 function write (path, content){
-    return new Promise((resolve) => {
-        resolve(fs.writeFileSync(path, content));
-        
-    });
+    // return new Promise((resolve) => {
+    //     resolve(fs.writeFileSync(path, content));
+    // });
+    fs.writeFileSync(path, content);
 }
 
 function create (filePath, content){
     //console.log(path);
-    return new Promise((resolve) => {
-        resolve(fs.writeFileSync(path.join(appRoot.path, filePath), content) == undefined);
-    });
+    // return new Promise((resolve) => {
+    //     resolve(fs.writeFileSync(path.join(appRoot.path, filePath), content) == undefined);
+    // });
+    return fs.writeFileSync(path.join(appRoot.path, filePath), content) == undefined;
     
 }
 
 function listFiles (target){
-    return new Promise((resolve) => {
-        resolve(fs.readdirSync(path.join(appRoot.path, target)));
-    });
+    // return new Promise((resolve) => {
+    //     resolve(fs.readdirSync(path.join(appRoot.path, target)));
+    // });
+    return fs.readdirSync(path.join(appRoot.path, target));
 };
