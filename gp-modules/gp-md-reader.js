@@ -35,24 +35,26 @@ exports.parseSpecialElements = function () {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut" +
     "labore et dolore magna aliqua. [flipcard] This is a card [/flipcard] Praesent tristique magna sit amet purus. [flipcard] This is a card 2 [/flipcard] ";
 
-  let regex = /\[flipcard\](.*?)\[\/flipcard\]/g;
-
+  let regex = /\[flipcard.*\](.*?)\[\/flipcard\]/g;
+  let reg = new RegExp(`/\[flipcard.*\](.*?)\[\/flipcard\]/`, g);
   /*
-      /\[flipcard\](.*?)\[\/flipcard\]/g
-      /\[slider\](.*?)\[\/slider\]/g
-      /\[button\](.*?)\[\/button\]/g
-      /\[image\](.*?)\[\/image\]/g
-      /\[embed\](.*?)\[\/embed\]/g
-      /\[column\](.*?)\[\/column\]/g
-      /\[div\](.*?)\[\/div\]/g
+      /\[flipcard.*\](.*?)\[\/flipcard\]/g
+      /\[slider.*\](.*?)\[\/slider\]/g
+      /\[button.*\](.*?)\[\/button\]/g
+      /\[image.*\](.*?)\[\/image\]/g
+      /\[embed.*\](.*?)\[\/embed\]/g
+      /\[column.*\](.*?)\[\/column\]/g
+      /\[div.*\](.*?)\[\/div\]/g
   */
 
   var matches,
     output = [];
   while ((matches = regex.exec(input))) {
-    output.push(matches[1]);
+    input = input.replace(regex, function (matched) {
+      return "<flipcard>" + matches[1] + "</flipcard>";
+    });
   }
-  return output;
+  return input;
 };
 
 exports.getAllFiles = function (dirPath = filepath, arrayOfFiles = []) {
