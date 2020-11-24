@@ -64,15 +64,14 @@ exports.parseSpecialElements = function () {
       /\[div.*?\](.*?)\[\/div\]/g
   */
 
-  var matches,
+  let matches,
     output = [];
   while ((matches = reg.exec(input))) {
-    console.log(matches);
     input = input.replace(matches[0], () => {
       return "<" + matches[1] + ">" + matches[2] + "</" + matches[1] + ">";
     });
   }
-
+  input = "<div>" + input + "</div>";
   return input;
 };
 
