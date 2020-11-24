@@ -2,13 +2,13 @@ cl<!-- {
   "type": "page",
   "title": "About",
   "doi": ""
-  "authors": ["Graham"], 
+  "authors": ["Graham"],
   "tags": ["about"],
   "date": "July 15, 2015",
   "thumbnail": "https://getuikit.com/v2/docs/images/placeholder_600x400.svg"
 } -->
 
-# Allice Lab
+# Alice Lab
 
 The Alice lab for Computational Worldmaking develops transferable knowledge and creative coding technology as well as intensifying computationally literate art practice in the construction of responsive artificial worlds experienced through rapidly emerging mixed/hybrid reality technologies including both Virtual Reality (VR) and Augmented Reality (AR). Inspired by the creativity of nature, its research-creation program leverages strong simulation and the self-modifying capacity of computational media to create artificial worlds whose rules can be rewritten while participants interact within them, pioneering heightened levels of human-machine interaction and intensified aesthetic experience through meaningful engagement using the whole body. Cutting across work in generative art, computer graphics, human-computer interaction, artificial life, complex systems and compiler technology, this research program reinforces influential work at York in augmented reality, computer vision, stereoscopic cinema and ubiquitous screens, and results in transferable research, open-source tools, and novel creative works.
 
