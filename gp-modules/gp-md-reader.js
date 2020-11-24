@@ -32,28 +32,47 @@ exports.readMetadata = function () {};
 
 exports.parseSpecialElements = function () {
   var input =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut" +
-    "labore et dolore magna aliqua. [flipcard] This is a card [/flipcard] Praesent tristique magna sit amet purus. [flipcard] This is a card 2 [/flipcard] ";
+    "Lorem ipsum dolor sit amet,[div] booto [/div] consectetur adipiscing elit, sed [image] gross [/image] do eiusmod tempor incididunt ut" +
+    "labore et dolore magna aliqua. [flipcard] This is a card [/flipcard] Praesent tristique magna sit amet purus. [button] This is a button 2 [/button] ";
 
-  let regex = /\[flipcard.*\](.*?)\[\/flipcard\]/g;
-  let reg = new RegExp(`/\[flipcard.*\](.*?)\[\/flipcard\]/`, g);
+  let regex = /\[flipcard.*?\](.*?)\[\/flipcard\]/g;
+  let specials = ["flipcard", "button"];
+  let specialsObj = {
+    flipcard: "flipcard",
+    button: "button",
+    slider: "slider",
+    image: "image",
+    embed: "embed",
+    column: "column",
+    div: "div",
+  };
+  let reg = new RegExp(
+    "\\[(" +
+      Object.keys(specialsObj).join(".*?|") +
+      ".*?)\\](.*?)\\[\\/(" +
+      Object.keys(specialsObj).join("|") +
+      ")\\]",
+    "g"
+  );
   /*
-      /\[flipcard.*\](.*?)\[\/flipcard\]/g
-      /\[slider.*\](.*?)\[\/slider\]/g
-      /\[button.*\](.*?)\[\/button\]/g
-      /\[image.*\](.*?)\[\/image\]/g
-      /\[embed.*\](.*?)\[\/embed\]/g
-      /\[column.*\](.*?)\[\/column\]/g
-      /\[div.*\](.*?)\[\/div\]/g
+      /\[flipcard.*?\](.*?)\[\/flipcard\]/g
+      /\[slider.*?\](.*?)\[\/slider\]/g
+      /\[button.*?\](.*?)\[\/button\]/g
+      /\[image.*?\](.*?)\[\/image\]/g
+      /\[embed.*?\](.*?)\[\/embed\]/g
+      /\[column.*?\](.*?)\[\/column\]/g
+      /\[div.*?\](.*?)\[\/div\]/g
   */
 
   var matches,
     output = [];
-  while ((matches = regex.exec(input))) {
-    input = input.replace(regex, function (matched) {
-      return "<flipcard>" + matches[1] + "</flipcard>";
+  while ((matches = reg.exec(input))) {
+    console.log(matches);
+    input = input.replace(matches[0], () => {
+      return "<" + matches[1] + ">" + matches[2] + "</" + matches[1] + ">";
     });
   }
+
   return input;
 };
 
