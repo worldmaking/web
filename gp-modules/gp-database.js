@@ -1,4 +1,4 @@
-const rw = require('./gp-read-write');
+const rw = require("./gp-read-write");
 
 /**
  * JSON Data File Module.
@@ -17,115 +17,110 @@ const rw = require('./gp-read-write');
  *  */
 
 module.exports = class {
-    constructor(filePath = './gp-temp/data.json'){
-        this._dataProps = [];
-        this._data = {};
-        this._filePath = filePath;
-    }
+  constructor(filePath = "./gp-temp/data.json") {
+    this._dataProps = [];
+    this._data = {};
+    this._filePath = filePath;
+  }
 
-    async init(){
-        if(await rw.exists(this._filePath)){
-            this._data = await rw.read(this._filePath);
-            this._data = JSON.parse(this._data);
-        } else {
-            await rw.create(this._filePath, "{}");
+  async init() {
+    if (await rw.exists(this._filePath)) {
+      this._data = await rw.read(this._filePath);
+      this._data = JSON.parse(this._data);
+    } else {
+      await rw.create(this._filePath, "{}");
+    }
+    let first = Object.keys(this._data)[0];
+    for (let k in this._data[first]) {
+      k = k.toString().replace("post_", "");
+      this.addProp(k);
+    }
+  }
+
+  async reinit() {
+    if (await rw.exists(this._filePath)) await rw.delete(this._filePath);
+    else await rw.create(this._filePath, "{}");
+    this._data = JSON.parse(this._data);
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  addProp(propName) {
+    if (!this._dataProps.includes(`post_${propName}`)) {
+      console.log(`Not detected post_${propName}`);
+      this._dataProps.push(`post_${propName}`);
+      this[`set_${propName}`] = function (obj, val) {
+        this._data[`${obj}`][`post_${propName}`] = val;
+        this.sync();
+      };
+      for (let k in this._data) {
+        if (!this._data[k].hasOwnProperty(`post_${propName}`)) {
+          this._data[k][`post_${propName}`] = "";
         }
-        let first = Object.keys(this._data)[0];
-        for (let k in this._data[first]){
-            k = k.toString().replace('post_', '');
-            this.addProp(k);
-        }
+      }
+      this.sync();
     }
+  }
 
-    async reinit(){
-        if(await rw.exists(this._filePath))
-            await rw.delete(this._filePath);
-         else 
-            await rw.create(this._filePath, "{}");
-        this._data = JSON.parse(this._data);
+  addEntry(entry) {
+    if (!this._data.hasOwnProperty(entry)) {
+      this._data[entry] = {};
+      console.log(`New ${entry} added.`);
+      this.syncEntryProp(entry);
+      this.sync();
+    } else {
+      console.log(`${entry} existed.`);
     }
+  }
+  removeEntry(entry) {
+    if (this._data.hasOwnProperty(entry)) {
+      delete this._data[entry];
+      console.log(`${entry} removed.`);
+      this.sync();
+    } else {
+      console.log(`${entry} was not found.`);
+    }
+  }
 
-    get data (){
-        return this._data;
-    }
+  getEntry(entry) {
+    return this._data[entry];
+  }
 
-    addProp(propName){
-        if(!this._dataProps.includes(`post_${propName}`)){
-            console.log(`Not detected post_${propName}`)
-            this._dataProps.push(`post_${propName}`);
-            this[`set_${propName}`] = function(obj, val){
-                this._data[`${obj}`][`post_${propName}`] = val;
-                this.sync();
-            };
-            for (let k in this._data){
-                if(!this._data[k].hasOwnProperty(`post_${propName}`)){
-                    this._data[k][`post_${propName}`] = '';
-                }
-            }
-            this.sync();  
-        }
+  getAllEntries() {
+    let ret = [];
+    for (let entry in this._data) {
+      ret.push(`${entry}`);
     }
+    return ret;
+  }
 
-    addEntry(entry){
-        if(!this._data.hasOwnProperty(entry)){
-            this._data[entry] = {}
-            console.log(`New ${entry} added.`);
-            this.syncEntryProp(entry);
-            this.sync(); 
-        }
-        else{
-            console.log(`${entry} existed.`);
-        }
+  searchEntries(query) {
+    let ret = [];
+    for (let entry in this._data) {
+      if (`${entry}`.includes(query)) ret.push(`${entry}`);
     }
-    removeEntry(entry){
-        if(this._data.hasOwnProperty(entry)){
-            delete this._data[entry];
-            console.log(`${entry} removed.`);
-            this.sync()
-        } else{
-            console.log(`${entry} was not found.`);
-        }
-    }
+    return ret;
+  }
 
-    getEntry (entry){
-        return this._data[entry];
+  showProps() {
+    var result = ``;
+    for (var i in this) {
+      console.log(`DataType.${i}`, this[i]);
     }
+    return result;
+  }
 
-    getAllEntries(){
-        let ret = [];
-        for (let entry in this._data){
-            ret.push(`${entry}`);
-        }
-        return ret;
+  syncEntryProp(entry) {
+    for (let prop of this._dataProps) {
+      if (!this._data[entry].hasOwnProperty(prop)) {
+        this._data[entry][`${prop}`] = "";
+      }
     }
+  }
 
-    searchEntries(query){
-        let ret = [];
-        for (let entry in this._data){
-            if (`${entry}`.includes(query))
-            ret.push(`${entry}`);
-        }
-        return ret;
-    }
-
-    showProps() {
-        var result = ``;
-        for (var i in this) {
-            console.log(`DataType.${i}`,this[i]);
-        }
-        return result;
-    }
-
-    syncEntryProp(entry){
-        for (let prop of this._dataProps){
-            if(!this._data[entry].hasOwnProperty(prop)){
-                this._data[entry][`${prop}`] = '';
-            }
-        }
-    }
-
-    async sync(){
-        await rw.write(this._filePath, JSON.stringify(this._data, null, "\t"));
-    }
-
-}
+  async sync() {
+    await rw.write(this._filePath, JSON.stringify(this._data, null, "\t"));
+  }
+};
