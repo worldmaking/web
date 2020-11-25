@@ -30,60 +30,6 @@ exports.parseFile = function (content = "no-content-found") {
 
 exports.readMetadata = function () {};
 
-function buildRegex(specialsObj) {
-  let reg = "";
-  let i = 0;
-  for (key in specialsObj) {
-    i++;
-    reg += "(?<" + key + ">\\[" + key + "(.*?)\\](.*?)\\[\\/" + key + "\\])";
-    if (i < Object.keys(specialsObj).length) {
-      reg += "|";
-    }
-  }
-  return new RegExp(reg, "g");
-}
-
-exports.parseSpecialElements = function () {
-  var input =
-    "Lorem ipsum dolor sit amet,[div] booto [/div] consectetur adipiscing elit, sed [image] gross [/image] do eiusmod tempor incididunt ut" +
-    "labore et dolore magna aliqua. [flipcard color:blue] [button text:orange]This is a card [/button] [/flipcard] Praesent tristique magna sit amet purus. [button] This is a button 2 [/button] ";
-
-  let specialsObj = {
-    flipcard: "flipcard",
-    button: "button",
-    slider: "slider",
-    image: "image",
-    embed: "embed",
-    column: "column",
-    div: "div",
-  };
-  let reg = buildRegex(specialsObj);
-
-  let matches;
-  while ((matches = reg.exec(input)) !== null) {
-    let i = 0;
-    for (const [key, value] of Object.entries(matches.groups)) {
-      i++;
-      if (value !== undefined) {
-        input = input.replace(value, () => {
-          let innerText = "";
-          //this is any inner elements in a special like [slider color: blue] gets "color: blue"
-          if (matches[i * 3 - 1] !== undefined) {
-            innerText = matches[i * 3 - 1];
-          }
-          return (
-            "<" + key + ">" + innerText + matches[i * 3] + "</" + key + ">"
-          );
-        });
-      }
-    }
-    reg.lastIndex = 0;
-  }
-
-  input = "<div>" + input + "</div>";
-  return input;
-};
-
 exports.getAllFiles = function (dirPath = filepath, arrayOfFiles = []) {
   let files = fs.readdirSync(dirPath);
   var self = this;
@@ -105,6 +51,3 @@ exports.getAllFiles = function (dirPath = filepath, arrayOfFiles = []) {
 // TEST
 let array = this.getAllFiles();
 console.log(array);
-
-let special = this.parseSpecialElements();
-console.log(special);
