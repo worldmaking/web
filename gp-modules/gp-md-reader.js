@@ -30,13 +30,24 @@ exports.parseFile = function (content = "no-content-found") {
 
 exports.readMetadata = function () {};
 
+function buildRegex(specialsObj) {
+  let reg = "";
+  let i = 0;
+  for (key in specialsObj) {
+    i++;
+    reg += "(?<" + key + ">\\[" + key + "(.*?)\\](.*?)\\[\\/" + key + "\\])";
+    if (i < Object.keys(specialsObj).length) {
+      reg += "|";
+    }
+  }
+  return new RegExp(reg, "g");
+}
+
 exports.parseSpecialElements = function () {
   var input =
     "Lorem ipsum dolor sit amet,[div] booto [/div] consectetur adipiscing elit, sed [image] gross [/image] do eiusmod tempor incididunt ut" +
-    "labore et dolore magna aliqua. [flipcard] This is a card [/flipcard] Praesent tristique magna sit amet purus. [button] This is a button 2 [/button] ";
+    "labore et dolore magna aliqua. [flipcard color:blue] [button text:orange]This is a card [/button] [/flipcard] Praesent tristique magna sit amet purus. [button] This is a button 2 [/button] ";
 
-  let regex = /\[flipcard.*?\](.*?)\[\/flipcard\]/g;
-  let specials = ["flipcard", "button"];
   let specialsObj = {
     flipcard: "flipcard",
     button: "button",
@@ -46,31 +57,29 @@ exports.parseSpecialElements = function () {
     column: "column",
     div: "div",
   };
-  let reg = new RegExp(
-    "\\[(" +
-      Object.keys(specialsObj).join(".*?|") +
-      ".*?)\\](.*?)\\[\\/(" +
-      Object.keys(specialsObj).join("|") +
-      ")\\]",
-    "g"
-  );
-  /*
-      /\[flipcard.*?\](.*?)\[\/flipcard\]/g
-      /\[slider.*?\](.*?)\[\/slider\]/g
-      /\[button.*?\](.*?)\[\/button\]/g
-      /\[image.*?\](.*?)\[\/image\]/g
-      /\[embed.*?\](.*?)\[\/embed\]/g
-      /\[column.*?\](.*?)\[\/column\]/g
-      /\[div.*?\](.*?)\[\/div\]/g
-  */
+  let reg = buildRegex(specialsObj);
 
-  let matches,
-    output = [];
-  while ((matches = reg.exec(input))) {
-    input = input.replace(matches[0], () => {
-      return "<" + matches[1] + ">" + matches[2] + "</" + matches[1] + ">";
-    });
+  let matches;
+  while ((matches = reg.exec(input)) !== null) {
+    let i = 0;
+    for (const [key, value] of Object.entries(matches.groups)) {
+      i++;
+      if (value !== undefined) {
+        input = input.replace(value, () => {
+          let innerText = "";
+          //this is any inner elements in a special like [slider color: blue] gets "color: blue"
+          if (matches[i * 3 - 1] !== undefined) {
+            innerText = matches[i * 3 - 1];
+          }
+          return (
+            "<" + key + ">" + innerText + matches[i * 3] + "</" + key + ">"
+          );
+        });
+      }
+    }
+    reg.lastIndex = 0;
   }
+
   input = "<div>" + input + "</div>";
   return input;
 };
