@@ -20,7 +20,7 @@ async function main() {
   // //console.log(DataStructure.data);
   // // console.log(rw.read(`gp-content/gp-themes/worldmaking/header.html`));
 
-  let special = new specials();
+  let special = new specials({ yummy: { conversion: "div", class: "yummy" } });
   let parsed = special.parseSpecials(await rw.read("./gp-modules/test.md"));
   rw.write("./gp-modules/test.html", parsed);
 }

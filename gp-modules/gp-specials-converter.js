@@ -1,6 +1,9 @@
 module.exports = class {
+  #specials;
+  #otherSpecials;
+  #allSpecials;
   constructor(otherSpecials = {}) {
-    this._specials = {
+    this.#specials = {
       flipcard: {
         conversion: "div",
         class: "flipcard",
@@ -58,8 +61,8 @@ module.exports = class {
         },
       },
     };
-    this._otherSpecials = otherSpecials;
-    this._allSpecials = { ...this._specials, ...this._otherSpecials };
+    this.#otherSpecials = otherSpecials;
+    this.#allSpecials = { ...this.#specials, ...this.#otherSpecials };
   }
 
   buildRegex(specials) {
@@ -74,13 +77,18 @@ module.exports = class {
     }
     return new RegExp(reg, "gs");
   }
+  parseSpecials(input) {
+    return (
+      "<div>" + this.#parseSpecialsRec(input, this.#allSpecials) + "</div>"
+    );
+  }
 
   /**
    * This is a recursive function that will loop through an input and convert it to HTML
    * @param {String} input
    * @param {Object} specials
    */
-  parseSpecials(input, specials = this._allSpecials) {
+  #parseSpecialsRec(input, specials) {
     let reg = this.buildRegex(specials);
     let matches;
     while ((matches = reg.exec(input)) !== null) {
@@ -92,7 +100,10 @@ module.exports = class {
             let style = "";
             let innerText = matches[i * 3];
             if (specials[key].children !== undefined) {
-              innerText = this.parseSpecials(innerText, specials[key].children);
+              innerText = this.#parseSpecialsRec(
+                innerText,
+                specials[key].children
+              );
             }
             if (matches[i * 3 - 1] !== undefined) {
               //this is any inner elements in a special like [slider color: blue] gets "color: blue"
@@ -102,7 +113,7 @@ module.exports = class {
               "<" +
               specials[key].conversion +
               ' class="' +
-              key +
+              specials[key].class +
               '"' +
               (style !== "" ? ' style="' + style.trim() + '"' : "") +
               ">" +
@@ -116,7 +127,6 @@ module.exports = class {
       }
       reg.lastIndex = matches.index;
     }
-    input = "<div>" + input + "</div>";
     return input;
   }
 };
@@ -124,7 +134,7 @@ module.exports = class {
 //   "Lorem ipsum[front] wadawd [/front]  dolor sit amet,[div] booto [/div] consectetur adipiscing elit, sed [image] gross [/image] do eiusmod tempor incididunt ut" +
 //   "labore et dolore magna aliqua. [flipcard] [front color:blue]This [button] wtwawa [/button] is a card [/front] [back color:red] this is back of card [/back] [/flipcard] Praesent tristique magna sit amet purus. [button] This is a button 2 [/button] ";
 
-// let specials1 = new Specials();
+//let specials1 = new this.Special();
 // console.log(specials1.parseSpecials(input));
 
 // //let special = parseSpecialElements();
