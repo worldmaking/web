@@ -3,7 +3,8 @@ let fs = require("fs"),
   appRoot = require("app-root-path"),
   database = require("./gp-database"),
   rw = require("./gp-read-write"),
-  specials = require("./gp-specials-converter");
+  specials = require("./gp-specials-converter"),
+  mdreader = require("./gp-md-reader");
 
 async function main() {
   // let DataStructure = new database();
@@ -21,7 +22,14 @@ async function main() {
   // // console.log(rw.read(`gp-content/gp-themes/worldmaking/header.html`));
 
   let special = new specials({ yummy: { conversion: "div", class: "yummy" } });
-  let parsed = special.parseSpecials(await rw.read("./gp-modules/test.md"));
+  let file = await rw.read("./gp-modules/test.md");
+
+  let parsed = special.parseSpecials(file);
+  parsed = mdreader.parseFile(parsed);
+  //parsed = special.reparse(parsed);
+
+  // let parsed = mdreader.parseFile(file);
+  // parsed = special.parseSpecials(parsed);
   rw.write("./gp-modules/test.html", parsed);
 }
 

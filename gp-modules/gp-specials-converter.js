@@ -65,6 +65,18 @@ module.exports = class {
     this.#allSpecials = { ...this.#specials, ...this.#otherSpecials };
   }
 
+  reparse(input) {
+    let reg = /\>(\s\w.*?)\</gs;
+    let matches;
+    while ((matches = reg.exec(input)) !== null) {
+      console.log(matches[1]);
+      input = input.replace(matches[1], () => {
+        return "<p>" + matches[1] + "</p>";
+      });
+    }
+    return input;
+  }
+
   buildRegex(specials) {
     let reg = "";
     let i = 0;
@@ -79,7 +91,8 @@ module.exports = class {
   }
   parseSpecials(input) {
     return (
-      "<div>" + this.#parseSpecialsRec(input, this.#allSpecials) + "</div>"
+      //"<div>" + this.#parseSpecialsRec(input, this.#allSpecials) + "</div>"
+      this.#parseSpecialsRec(input, this.#allSpecials)
     );
   }
 
